@@ -14,6 +14,7 @@ RUN apt-get -y install git iproute2 procps lsb-release
 RUN apt-get update \
     # Install gocode-gomod.
     # Install other tools.
+    && go get -v golang.org/x/tools/gopls \
     # Clean up.
     && apt-get autoremove -y \
     && apt-get clean -y \
@@ -23,6 +24,12 @@ RUN apt-get update \
 ENV DEBIAN_FRONTEND=dialog
 
 WORKDIR /go/src/github.com/mirfaiziev/gin-rest-api/app 
+VOLUME /go/src/github.com/mirfaiziev/gin-rest-api/app 
+
+
+COPY ./src src/
+COPY go.mod ./
+COPY go.sum ./
 
 # Expose service ports.
 EXPOSE 8081
