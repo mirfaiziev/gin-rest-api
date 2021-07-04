@@ -1,14 +1,30 @@
 
-ARG GO_VERSION=1.16
+FROM golang:1.16 as build
 
-FROM golang:${GO_VERSION}-alpine AS build
+# Configure to reduce warnings and limitations as instruction from official VSCode Remote-Containers.
+# See https://code.visualstudio.com/docs/remote/containers-advanced#_reducing-dockerfile-build-warnings.
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+    && apt-get -y install --no-install-recommends apt-utils 2>&1
 
-RUN apk add --no-cache git
+# Verify git, process tools, lsb-release (common in install instructions for CLIs) installed.
+RUN apt-get -y install git iproute2 procps lsb-release
 
+# Install Go tools.
+RUN apt-get update \
+    # Install gocode-gomod.
+    # Install other tools.
+    # Clean up.
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
+# Revert workaround at top layer.
+ENV DEBIAN_FRONTEND=dialog
 
-# This container exposes port 8080 to the outside world
-EXPOSE 8080
+WORKDIR /go/src/github.com/mirfaiziev/gin-rest-api/app 
 
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+# Expose service ports.
+EXPOSE 8081
+
+# ENTRYPOINT ["tail", "-f", "/dev/null"]

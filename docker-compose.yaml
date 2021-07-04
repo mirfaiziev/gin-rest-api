@@ -6,4 +6,4 @@ services:
         context: ./app
         target: build
     volumes: 
-      - ./app:/app
+      - ./app:/go/src/github.com/mirfaiziev/gin-rest-api/app 
