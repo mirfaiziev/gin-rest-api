@@ -4,16 +4,17 @@ import (
 	"fmt"
 	"log"
 
+	"sync"
+
 	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-type DBResult struct {
-	result string
-}
+var connection *gorm.DB
+var doOnce sync.Once
 
-func InitDatabase() {
+func initConnection() *gorm.DB {
 
 	prosgret_conname := fmt.Sprintf("host=%v port=%v user=%v dbname=%v password=%v sslmode=disable",
 		viper.Get("POSTGRES_HOST"),
@@ -29,8 +30,13 @@ func InitDatabase() {
 		panic("Failed to connect to database!")
 	}
 
-	var result string
-	db.Raw("select 1+1 as res").Scan(&result)
+	return db
+}
 
-	fmt.Println(result)
+func GetConnection() *gorm.DB {
+	doOnce.Do(func() {
+		connection = initConnection()
+	})
+
+	return connection
 }
