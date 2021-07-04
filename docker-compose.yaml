@@ -5,5 +5,25 @@ services:
     build:
         context: ./app
         target: build
+    depends_on: 
+      - postgres
     volumes: 
       - ./app:/go/src/github.com/mirfaiziev/gin-rest-api/app 
+    env_file:
+      - ./app/.env
+    ports:
+      - "8081:8081"
+    
+  postgres:
+    image: postgres:13-alpine
+    environment:
+      - POSTGRES_DB=api
+      - POSTGRES_PASSWORD=api
+      - POSTGRES_USER=api
+    ports:
+      - 5432:5432
+    volumes:
+#      - db_data:/var/lib/postgresql/data:rw
+      # you may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+      - ./data/db:/var/lib/postgresql/data:rw
+    

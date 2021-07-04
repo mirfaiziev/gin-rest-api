@@ -1,6 +1,6 @@
 package server
 
-func Init() {
+func InitHttpServer() {
 	router := NewRouter()
 	router.Run(":8081")
 }

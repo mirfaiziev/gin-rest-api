@@ -30,7 +30,7 @@ VOLUME /go/src/github.com/mirfaiziev/gin-rest-api/app
 COPY ./src src/
 COPY go.mod ./
 COPY go.sum ./
-
+COPY main.go ./
 # Expose service ports.
 EXPOSE 8081
 
