@@ -1,6 +1,14 @@
 package server
 
+import (
+	"fmt"
+
+	"github.com/spf13/viper"
+)
+
 func InitHttpServer() {
 	router := NewRouter()
-	router.Run(":8081")
+	port := fmt.Sprintf(":%s", viper.Get("APP_PORT"))
+
+	router.Run(port)
 }

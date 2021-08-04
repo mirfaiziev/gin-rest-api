@@ -15,6 +15,7 @@ RUN apt-get update \
     # Install gocode-gomod.
     # Install other tools.
     && go get -v golang.org/x/tools/gopls \
+    && go get github.com/google/wire/cmd/wire \
     # Clean up.
     && apt-get autoremove -y \
     && apt-get clean -y \

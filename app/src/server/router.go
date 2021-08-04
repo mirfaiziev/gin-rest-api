@@ -1,8 +1,6 @@
 package server
 
 import (
-	"rest-api-app/src/controller"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,16 +9,11 @@ func NewRouter() *gin.Engine {
 
 	v1 := router.Group("api/v1")
 	{
-		testGroup := v1.Group("test")
-		{
-			testController := new(controller.TestController)
-			testGroup.GET("/", testController.Get)
-		}
-
 		videoGroup := v1.Group("video")
 		{
-			videoContoller := new(controller.VideoController)
+			videoContoller := initVideoController()
 			videoGroup.POST("/", videoContoller.Add)
+			videoGroup.GET("/", videoContoller.FindAll)
 		}
 	}
 

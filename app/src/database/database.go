@@ -1,8 +1,9 @@
-package server
+package database
 
 import (
 	"fmt"
 	"log"
+	video "rest-api-app/src/domain/video"
 
 	"sync"
 
@@ -30,10 +31,12 @@ func initConnection() *gorm.DB {
 		panic("Failed to connect to database!")
 	}
 
+	db.AutoMigrate(&video.VideoEntity{})
+
 	return db
 }
 
-func GetConnection() *gorm.DB {
+func GetDB() *gorm.DB {
 	doOnce.Do(func() {
 		connection = initConnection()
 	})
